@@ -1,0 +1,371 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="StudentDemoModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012.Azure" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="SAKkayttaja">
+          <Key>
+            <PropertyRef Name="KayttajaID" />
+          </Key>
+          <Property Name="KayttajaID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Kayttajatunnus" Type="nvarchar" MaxLength="200" Nullable="false" />
+          <Property Name="Salasana" Type="nvarchar" MaxLength="100" Nullable="false" />
+        </EntityType>
+        <EntityType Name="SAKpalkinnontarjoaja">
+          <Key>
+            <PropertyRef Name="PalkinnontarjoajaID" />
+          </Key>
+          <Property Name="PalkinnontarjoajaID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="YrityksenNimi" Type="nvarchar" MaxLength="256" />
+          <Property Name="Etunimi" Type="nvarchar" MaxLength="256" />
+          <Property Name="Sukunimi" Type="nvarchar" MaxLength="256" />
+          <Property Name="Sahkoposti" Type="nvarchar" MaxLength="256" />
+          <Property Name="Puhelinnumero" Type="nvarchar" MaxLength="256" />
+        </EntityType>
+        <EntityType Name="SAKpalkinto">
+          <Key>
+            <PropertyRef Name="PalkintoID" />
+          </Key>
+          <Property Name="PalkintoID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="PalkintoNimi" Type="nvarchar" MaxLength="256" />
+          <Property Name="PalkinnonTarjoajaID" Type="int" />
+          <Property Name="Palkintokuva" Type="varbinary(max)" />
+          <Property Name="KuvanKoko" Type="bit" />
+        </EntityType>
+        <EntityType Name="SAKtblImages">
+          <Key>
+            <PropertyRef Name="tblImagesID" />
+          </Key>
+          <Property Name="tblImagesID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="256" />
+          <Property Name="Size" Type="int" />
+          <Property Name="ImageData" Type="image" />
+        </EntityType>
+        <EntityType Name="SAKtehdytteot">
+          <Key>
+            <PropertyRef Name="TehdytTeotID" />
+          </Key>
+          <Property Name="TehdytTeotID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="KayttajaID" Type="int" />
+          <Property Name="Tekopvm" Type="datetime" />
+          <Property Name="PalkintoID" Type="int" />
+          <Property Name="VoimassaOloPvm" Type="datetime" />
+          <Property Name="TekoID" Type="int" />
+          <Property Name="Status" Type="int" />
+        </EntityType>
+        <EntityType Name="SAKteot">
+          <Key>
+            <PropertyRef Name="TekoID" />
+          </Key>
+          <Property Name="TekoID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TeonNimi" Type="nvarchar" MaxLength="256" />
+        </EntityType>
+        <Association Name="FK__SAKpalkin__Palki__5BE2A6F2">
+          <End Role="SAKpalkinnontarjoaja" Type="Self.SAKpalkinnontarjoaja" Multiplicity="0..1" />
+          <End Role="SAKpalkinto" Type="Self.SAKpalkinto" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SAKpalkinnontarjoaja">
+              <PropertyRef Name="PalkinnontarjoajaID" />
+            </Principal>
+            <Dependent Role="SAKpalkinto">
+              <PropertyRef Name="PalkinnonTarjoajaID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__SAKtehdyt__Kaytt__5535A963">
+          <End Role="SAKkayttaja" Type="Self.SAKkayttaja" Multiplicity="0..1" />
+          <End Role="SAKtehdytteot" Type="Self.SAKtehdytteot" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SAKkayttaja">
+              <PropertyRef Name="KayttajaID" />
+            </Principal>
+            <Dependent Role="SAKtehdytteot">
+              <PropertyRef Name="KayttajaID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__SAKtehdyt__Palki__5CD6CB2B">
+          <End Role="SAKpalkinto" Type="Self.SAKpalkinto" Multiplicity="0..1" />
+          <End Role="SAKtehdytteot" Type="Self.SAKtehdytteot" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SAKpalkinto">
+              <PropertyRef Name="PalkintoID" />
+            </Principal>
+            <Dependent Role="SAKtehdytteot">
+              <PropertyRef Name="PalkintoID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__SAKtehdyt__TekoI__571DF1D5">
+          <End Role="SAKteot" Type="Self.SAKteot" Multiplicity="0..1" />
+          <End Role="SAKtehdytteot" Type="Self.SAKtehdytteot" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SAKteot">
+              <PropertyRef Name="TekoID" />
+            </Principal>
+            <Dependent Role="SAKtehdytteot">
+              <PropertyRef Name="TekoID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="StudentDemoModelStoreContainer">
+          <EntitySet Name="SAKkayttaja" EntityType="Self.SAKkayttaja" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SAKpalkinnontarjoaja" EntityType="Self.SAKpalkinnontarjoaja" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SAKpalkinto" EntityType="Self.SAKpalkinto" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SAKtblImages" EntityType="Self.SAKtblImages" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SAKtehdytteot" EntityType="Self.SAKtehdytteot" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SAKteot" EntityType="Self.SAKteot" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__SAKpalkin__Palki__5BE2A6F2" Association="Self.FK__SAKpalkin__Palki__5BE2A6F2">
+            <End Role="SAKpalkinnontarjoaja" EntitySet="SAKpalkinnontarjoaja" />
+            <End Role="SAKpalkinto" EntitySet="SAKpalkinto" />
+          </AssociationSet>
+          <AssociationSet Name="FK__SAKtehdyt__Kaytt__5535A963" Association="Self.FK__SAKtehdyt__Kaytt__5535A963">
+            <End Role="SAKkayttaja" EntitySet="SAKkayttaja" />
+            <End Role="SAKtehdytteot" EntitySet="SAKtehdytteot" />
+          </AssociationSet>
+          <AssociationSet Name="FK__SAKtehdyt__Palki__5CD6CB2B" Association="Self.FK__SAKtehdyt__Palki__5CD6CB2B">
+            <End Role="SAKpalkinto" EntitySet="SAKpalkinto" />
+            <End Role="SAKtehdytteot" EntitySet="SAKtehdytteot" />
+          </AssociationSet>
+          <AssociationSet Name="FK__SAKtehdyt__TekoI__571DF1D5" Association="Self.FK__SAKtehdyt__TekoI__571DF1D5">
+            <End Role="SAKteot" EntitySet="SAKteot" />
+            <End Role="SAKtehdytteot" EntitySet="SAKtehdytteot" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="StudentDemoModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="SAKkayttaja">
+          <Key>
+            <PropertyRef Name="KayttajaID" />
+          </Key>
+          <Property Name="KayttajaID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Kayttajatunnus" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Salasana" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="SAKtehdytteots" Relationship="Self.FK__SAKtehdyt__Kaytt__5535A963" FromRole="SAKkayttaja" ToRole="SAKtehdytteot" />
+        </EntityType>
+        <EntityType Name="SAKpalkinnontarjoaja">
+          <Key>
+            <PropertyRef Name="PalkinnontarjoajaID" />
+          </Key>
+          <Property Name="PalkinnontarjoajaID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="YrityksenNimi" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Name="Etunimi" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Name="Sukunimi" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Name="Sahkoposti" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Name="Puhelinnumero" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="SAKpalkintoes" Relationship="Self.FK__SAKpalkin__Palki__5BE2A6F2" FromRole="SAKpalkinnontarjoaja" ToRole="SAKpalkinto" />
+        </EntityType>
+        <EntityType Name="SAKpalkinto">
+          <Key>
+            <PropertyRef Name="PalkintoID" />
+          </Key>
+          <Property Name="PalkintoID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PalkintoNimi" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Name="PalkinnonTarjoajaID" Type="Int32" />
+          <Property Name="Palkintokuva" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <Property Name="KuvanKoko" Type="Boolean" />
+          <NavigationProperty Name="SAKpalkinnontarjoaja" Relationship="Self.FK__SAKpalkin__Palki__5BE2A6F2" FromRole="SAKpalkinto" ToRole="SAKpalkinnontarjoaja" />
+          <NavigationProperty Name="SAKtehdytteots" Relationship="Self.FK__SAKtehdyt__Palki__5CD6CB2B" FromRole="SAKpalkinto" ToRole="SAKtehdytteot" />
+        </EntityType>
+        <EntityType Name="SAKtblImage">
+          <Key>
+            <PropertyRef Name="tblImagesID" />
+          </Key>
+          <Property Name="tblImagesID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Name="Size" Type="Int32" />
+          <Property Name="ImageData" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
+        <EntityType Name="SAKtehdytteot">
+          <Key>
+            <PropertyRef Name="TehdytTeotID" />
+          </Key>
+          <Property Name="TehdytTeotID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="KayttajaID" Type="Int32" />
+          <Property Name="Tekopvm" Type="DateTime" Precision="3" />
+          <Property Name="PalkintoID" Type="Int32" />
+          <Property Name="VoimassaOloPvm" Type="DateTime" Precision="3" />
+          <Property Name="TekoID" Type="Int32" />
+          <Property Name="Status" Type="Int32" />
+          <NavigationProperty Name="SAKkayttaja" Relationship="Self.FK__SAKtehdyt__Kaytt__5535A963" FromRole="SAKtehdytteot" ToRole="SAKkayttaja" />
+          <NavigationProperty Name="SAKpalkinto" Relationship="Self.FK__SAKtehdyt__Palki__5CD6CB2B" FromRole="SAKtehdytteot" ToRole="SAKpalkinto" />
+          <NavigationProperty Name="SAKteot" Relationship="Self.FK__SAKtehdyt__TekoI__571DF1D5" FromRole="SAKtehdytteot" ToRole="SAKteot" />
+        </EntityType>
+        <EntityType Name="SAKteot">
+          <Key>
+            <PropertyRef Name="TekoID" />
+          </Key>
+          <Property Name="TekoID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TeonNimi" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="SAKtehdytteots" Relationship="Self.FK__SAKtehdyt__TekoI__571DF1D5" FromRole="SAKteot" ToRole="SAKtehdytteot" />
+        </EntityType>
+        <Association Name="FK__SAKtehdyt__Kaytt__5535A963">
+          <End Role="SAKkayttaja" Type="Self.SAKkayttaja" Multiplicity="0..1" />
+          <End Role="SAKtehdytteot" Type="Self.SAKtehdytteot" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SAKkayttaja">
+              <PropertyRef Name="KayttajaID" />
+            </Principal>
+            <Dependent Role="SAKtehdytteot">
+              <PropertyRef Name="KayttajaID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__SAKpalkin__Palki__5BE2A6F2">
+          <End Role="SAKpalkinnontarjoaja" Type="Self.SAKpalkinnontarjoaja" Multiplicity="0..1" />
+          <End Role="SAKpalkinto" Type="Self.SAKpalkinto" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SAKpalkinnontarjoaja">
+              <PropertyRef Name="PalkinnontarjoajaID" />
+            </Principal>
+            <Dependent Role="SAKpalkinto">
+              <PropertyRef Name="PalkinnonTarjoajaID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__SAKtehdyt__Palki__5CD6CB2B">
+          <End Role="SAKpalkinto" Type="Self.SAKpalkinto" Multiplicity="0..1" />
+          <End Role="SAKtehdytteot" Type="Self.SAKtehdytteot" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SAKpalkinto">
+              <PropertyRef Name="PalkintoID" />
+            </Principal>
+            <Dependent Role="SAKtehdytteot">
+              <PropertyRef Name="PalkintoID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__SAKtehdyt__TekoI__571DF1D5">
+          <End Role="SAKteot" Type="Self.SAKteot" Multiplicity="0..1" />
+          <End Role="SAKtehdytteot" Type="Self.SAKtehdytteot" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SAKteot">
+              <PropertyRef Name="TekoID" />
+            </Principal>
+            <Dependent Role="SAKtehdytteot">
+              <PropertyRef Name="TekoID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="StudentDemoEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="SAKkayttajas" EntityType="Self.SAKkayttaja" />
+          <EntitySet Name="SAKpalkinnontarjoajas" EntityType="Self.SAKpalkinnontarjoaja" />
+          <EntitySet Name="SAKpalkintoes" EntityType="Self.SAKpalkinto" />
+          <EntitySet Name="SAKtblImages" EntityType="Self.SAKtblImage" />
+          <EntitySet Name="SAKtehdytteots" EntityType="Self.SAKtehdytteot" />
+          <EntitySet Name="SAKteots" EntityType="Self.SAKteot" />
+          <AssociationSet Name="FK__SAKtehdyt__Kaytt__5535A963" Association="Self.FK__SAKtehdyt__Kaytt__5535A963">
+            <End Role="SAKkayttaja" EntitySet="SAKkayttajas" />
+            <End Role="SAKtehdytteot" EntitySet="SAKtehdytteots" />
+          </AssociationSet>
+          <AssociationSet Name="FK__SAKpalkin__Palki__5BE2A6F2" Association="Self.FK__SAKpalkin__Palki__5BE2A6F2">
+            <End Role="SAKpalkinnontarjoaja" EntitySet="SAKpalkinnontarjoajas" />
+            <End Role="SAKpalkinto" EntitySet="SAKpalkintoes" />
+          </AssociationSet>
+          <AssociationSet Name="FK__SAKtehdyt__Palki__5CD6CB2B" Association="Self.FK__SAKtehdyt__Palki__5CD6CB2B">
+            <End Role="SAKpalkinto" EntitySet="SAKpalkintoes" />
+            <End Role="SAKtehdytteot" EntitySet="SAKtehdytteots" />
+          </AssociationSet>
+          <AssociationSet Name="FK__SAKtehdyt__TekoI__571DF1D5" Association="Self.FK__SAKtehdyt__TekoI__571DF1D5">
+            <End Role="SAKteot" EntitySet="SAKteots" />
+            <End Role="SAKtehdytteot" EntitySet="SAKtehdytteots" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="StudentDemoModelStoreContainer" CdmEntityContainer="StudentDemoEntities">
+          <EntitySetMapping Name="SAKkayttajas">
+            <EntityTypeMapping TypeName="StudentDemoModel.SAKkayttaja">
+              <MappingFragment StoreEntitySet="SAKkayttaja">
+                <ScalarProperty Name="KayttajaID" ColumnName="KayttajaID" />
+                <ScalarProperty Name="Kayttajatunnus" ColumnName="Kayttajatunnus" />
+                <ScalarProperty Name="Salasana" ColumnName="Salasana" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SAKpalkinnontarjoajas">
+            <EntityTypeMapping TypeName="StudentDemoModel.SAKpalkinnontarjoaja">
+              <MappingFragment StoreEntitySet="SAKpalkinnontarjoaja">
+                <ScalarProperty Name="PalkinnontarjoajaID" ColumnName="PalkinnontarjoajaID" />
+                <ScalarProperty Name="YrityksenNimi" ColumnName="YrityksenNimi" />
+                <ScalarProperty Name="Etunimi" ColumnName="Etunimi" />
+                <ScalarProperty Name="Sukunimi" ColumnName="Sukunimi" />
+                <ScalarProperty Name="Sahkoposti" ColumnName="Sahkoposti" />
+                <ScalarProperty Name="Puhelinnumero" ColumnName="Puhelinnumero" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SAKpalkintoes">
+            <EntityTypeMapping TypeName="StudentDemoModel.SAKpalkinto">
+              <MappingFragment StoreEntitySet="SAKpalkinto">
+                <ScalarProperty Name="PalkintoID" ColumnName="PalkintoID" />
+                <ScalarProperty Name="PalkintoNimi" ColumnName="PalkintoNimi" />
+                <ScalarProperty Name="PalkinnonTarjoajaID" ColumnName="PalkinnonTarjoajaID" />
+                <ScalarProperty Name="Palkintokuva" ColumnName="Palkintokuva" />
+                <ScalarProperty Name="KuvanKoko" ColumnName="KuvanKoko" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SAKtblImages">
+            <EntityTypeMapping TypeName="StudentDemoModel.SAKtblImage">
+              <MappingFragment StoreEntitySet="SAKtblImages">
+                <ScalarProperty Name="tblImagesID" ColumnName="tblImagesID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Size" ColumnName="Size" />
+                <ScalarProperty Name="ImageData" ColumnName="ImageData" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SAKtehdytteots">
+            <EntityTypeMapping TypeName="StudentDemoModel.SAKtehdytteot">
+              <MappingFragment StoreEntitySet="SAKtehdytteot">
+                <ScalarProperty Name="TehdytTeotID" ColumnName="TehdytTeotID" />
+                <ScalarProperty Name="KayttajaID" ColumnName="KayttajaID" />
+                <ScalarProperty Name="Tekopvm" ColumnName="Tekopvm" />
+                <ScalarProperty Name="PalkintoID" ColumnName="PalkintoID" />
+                <ScalarProperty Name="VoimassaOloPvm" ColumnName="VoimassaOloPvm" />
+                <ScalarProperty Name="TekoID" ColumnName="TekoID" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SAKteots">
+            <EntityTypeMapping TypeName="StudentDemoModel.SAKteot">
+              <MappingFragment StoreEntitySet="SAKteot">
+                <ScalarProperty Name="TekoID" ColumnName="TekoID" />
+                <ScalarProperty Name="TeonNimi" ColumnName="TeonNimi" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="a5a6b6339115463c960a047e88ffa263" Name="Diagram1">
+        <EntityTypeShape EntityType="StudentDemoModel.SAKkayttaja" Width="1.5" PointX="3" PointY="5" IsExpanded="true" />
+        <EntityTypeShape EntityType="StudentDemoModel.SAKpalkinnontarjoaja" Width="1.5" PointX="0.75" PointY="1.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="StudentDemoModel.SAKpalkinto" Width="1.5" PointX="3" PointY="1.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="StudentDemoModel.SAKtblImage" Width="1.5" PointX="5.75" PointY="4.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="StudentDemoModel.SAKtehdytteot" Width="1.5" PointX="5.25" PointY="1" IsExpanded="true" />
+        <EntityTypeShape EntityType="StudentDemoModel.SAKteot" Width="1.5" PointX="3" PointY="7.5" IsExpanded="true" />
+        <AssociationConnector Association="StudentDemoModel.FK__SAKtehdyt__Kaytt__5535A963" ManuallyRouted="false" />
+        <AssociationConnector Association="StudentDemoModel.FK__SAKpalkin__Palki__5BE2A6F2" ManuallyRouted="false" />
+        <AssociationConnector Association="StudentDemoModel.FK__SAKtehdyt__Palki__5CD6CB2B" ManuallyRouted="false" />
+        <AssociationConnector Association="StudentDemoModel.FK__SAKtehdyt__TekoI__571DF1D5" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
